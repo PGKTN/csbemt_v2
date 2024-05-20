@@ -1,0 +1,157 @@
+// mass conservation
+    mass_flow = rho * A_vena * w = rho * A_disk * v_ind
+    mass_flow = rho * A_disk * (Vc + v_ind)
+
+// momentum conservation
+// w : 직경이 가장 작은 부분에서의 유속
+    T = mass_flow * w
+
+// energy conservation
+    v_ind = (1/2) * w
+    A_vena = (1/2) * A_disk
+
+Therefore, 
+    T = 2 * rho * A_disk * Math.Pow(v_ind, 2)
+    v_ind = Math.Sqrt(T / (2 * rho * A_disk))
+
+// Lift
+    L = (1/2) * Cl * rho * Math.Pow(V, 2) * A_wing
+
+// Power
+    P = T * v_ind
+
+// Disk Loading
+    DL = p2 - p1 = (1/2) * rho * Math.Pow(w, 2)
+
+// Thrust Coefficient
+    v_tip = omega * radius
+    Ct = T / (rho * A_disk * Math.Pow(v_tip, 2))
+
+// Ct 회귀분석
+    Ct = (1/2) * sigma * Cl_alpha * ((theta / 3) - (1/2) * Math.Sqrt(Ct / 2))
+
+// Ideal Power Coefficient (이상적)
+    Cp = Math.Pow(Ct, 3/2) / Math.Sqrt(2)
+
+// Correction Factor (보정상수)
+    kappa = ?
+
+// Induced Inflow Ratio
+    rambda = v_ind / v_tip
+
+// Profile Drag Coefficient
+    Cd_profile = D_profile / ((1/2) * rho * Math.Pow(U, 2) * chord)
+
+// Profile Power
+    P_profile = (1/8) * rho * Nb * Math.Pow(omega, 3) * chord * Cd_profile * Math.Pow(radius, 4)
+
+// Rotor Solidity, 블레이드 면적과 디스크 면적의 비
+    sigma = Nb * chord / (Math.PI * Radius)
+
+// Profile Power Coefficient
+    Cp_profile = (1/8) * sigma * Cd_profile
+
+// Total Power Coefficient
+    Cp = kappa * Math.Pow(Ct, 3/2) / Math.Sqrt(2) + (1/8) * sigma * Cd_profile
+
+// Reynolds Number
+    Re = rho * omega * radius * chord / mu
+
+// RPM = omega * 60 / (2 * Math.PI)
+
+// Tip Loss로 인한 면적 감소 현상 + Root Cut
+// 0 < B <= 1
+    A_effective = Math.Pow(B, 2) * A - A_hub
+
+// For hovering, B
+    B = 1 - (1.386 / Nb) * rambda_i / Math.Sqrt(1 + Math.Pow(rambda_i))
+    rambda_i = Math.Sqrt(Ct / 2)
+
+// dL = (1/2) * rho * Math.Pow(U, 2) * chord * Cl * dy
+// dD = (1/2) * rho * Math.Pow(U, 2) * chord * Cd * dy
+// dT = Nb * (dL * Math.Cos(phi) - dD * Math.Sin(phi))
+// dQ = Nb * (dL * Math.Sin(phi) + dD * Math.Cos(phi)) * y
+// dP = omega * dQ
+
+// 
+
+Ct = Cl * Math.Cos(phi) - chord * Cd * Math.Sin(phi);
+Ct = T / (rho * Math.Pow(n, 2) * Math.Pow(diameter, 4));
+Ct = T / (rho * area * Math.Pow(vt, 2));
+
+Cq = Q / (rho * Math.Pow(n, 2) * Math.Pow(diameter, 5));
+Cq = Q / (rho * area * Math.Pow(vt, 2) * radius);
+
+Cp = 2 * Math.PI * Cq;
+Cp = (kappa * Math.Pow(Ct, 1.5)) / Math.Sqrt(2) * (1 / 8) * sigma * Cd0;
+Cp = Math.Pow(Ct, 1.5) / Math.Sqrt(2);
+Cp = (kappa * Math.Pow(Ct, 1.5)) / Math.Sqrt(2) + (1 / 8) * sigma * Cd0;
+
+w = 2 * vi;
+
+Vi = omega * ri; //i번째에서의 속력
+qi = (1/2) * rho * Math.Pow(Vi, 2); //i번째에서의 압력
+
+psi : 방위각
+
+V(r) = omega * radius + V_infinity * Math.Sin(psi);
+
+omega = (RPM / 60) * (2 * Math.PI);
+
+vt = omega * radius;     // tip_velocity
+
+mass_flow = rho * area * (Vc + vi);
+
+T = mass_flow * w;  // weight * g
+
+P = Math.Pow(T, 1.5) / Math.Sqrt(2 * rho * area);
+
+sigma = (Nb * chord) / (Math.PI * radius);
+
+induced_inflow_ratio = Math.Sqrt(Ct / 2);
+
+D = 0.5 * rho * Math.Pow(omega * y, 2) * chord * Cd0;
+
+P0 = (1 / 8) * rho * Nb * Math.Pow(omega, 3) * chord * Cd0 * Math.Pow(radius, 4);
+
+phi = Math.atan(Up / Ut);
+
+Up = Vc + vi;
+Ut = omega * y;
+U = Math.sqrt(Math.Pow(Ut, 2) + Math.Pow(Up, 2));
+
+vi = Math.Sqrt(T/(2*rho*area));
+
+dL = (1/2) * rho * Math.Pow(U, 2) * chord * Cl * dy
+dD = (1/2) * rho * Math.Pow(U, 2) * chord * Cd * dy
+dT = Nb * ((dL * Math.Cos(phi)) - (dD * Math.Sin(phi)));
+dQ = Nb * ((dL * Math.Sin(phi)) + (dD * Math.Cos(phi))) * y;
+dP = dQ * omega;
+
+# From blade element theory
+self.dT = self.sigma*pi*rho*U**2*CT*r*self.width
+self.dQ = self.sigma*pi*rho*U**2*CQ*r**2*self.width
+
+dT = sigma * Math.PI * rho * Math.Pow(U, 2) * Ct * radius * area;
+
+U = Math.sqrt(Math.Pow(v, 2) + Math.Pow(vp, 2));
+v = (1 + chord * a) * v_inf;
+vp = (1 + chord * ap) * omega * r
+
+a = 1/(kappa - chord);
+ap = 1/(kappap + chord);
+
+kappa = 4 * F * Math.Pow(Math.Sin(phi), 2) / (sigma * Ct);
+kappap = 4 * F * Math.Sin(phi) * Math.Cos(phi) / (sigma * Cq);
+
+F = F_tip * F_hub;
+F_tip = parndtl(blade_radius - radius, radius, phi)
+F_hub = prandtl(radius - blade_hub_radius, r, phi)
+
+        def prandtl(dr, r, phi):
+            f = self.rotor.n_blades*dr/(2*r*(sin(phi)))
+            if (-f > 500): # exp can overflow for very large numbers
+                F = 1.0
+            else:
+                F = 2*acos(min(1.0, exp(-f)))/pi
+

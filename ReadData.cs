@@ -8,7 +8,7 @@ namespace csbemt_v2
 {
     public class ReadData
     {
-        public void Airfoil_dat(string file_path, List<double> Reynolds_LookUp)
+        public void Airfoil_dat(string file_path, List<double> Reynolds_LookUp, alpha_LookUp)
         {
 
             List<string> airfoil_data_line = new List<string>();
@@ -44,7 +44,23 @@ namespace csbemt_v2
 
                 for (int j = 0; j < data.Length; j++)
                 {
-                    Console.Write(data[j] + " ");
+                    if (i == 0)
+                    {
+                        Reynolds_LookUp.Add(double.Parse(data[j]));
+
+                        //Console.WriteLine(Reynolds_LookUp[j]);
+                        //Console.WriteLine(Reynolds_LookUp.Count);
+                    }
+                    else
+                    {
+                        Console.WriteLine(data[j]);
+                    }
+
+                    if ( j==0)
+                    {
+                        alpha_LookUp.Add(data[j])
+                    }
+
                 }
                 Console.WriteLine();
             }

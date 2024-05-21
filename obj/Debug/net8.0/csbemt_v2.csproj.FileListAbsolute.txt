@@ -12,3 +12,4 @@ C:\csbemt_v2\obj\Debug\net8.0\refint\csbemt_v2.dll
 C:\csbemt_v2\obj\Debug\net8.0\csbemt_v2.pdb
 C:\csbemt_v2\obj\Debug\net8.0\csbemt_v2.genruntimeconfig.cache
 C:\csbemt_v2\obj\Debug\net8.0\ref\csbemt_v2.dll
+C:\csbemt_v2\obj\Debug\net8.0\csbemt_v2.sourcelink.json

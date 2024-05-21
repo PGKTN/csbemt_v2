@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace csbemt_v2
 {
     public class ReadData
     {
-        public void Airfoil_dat(string file_path, List<double> Reynolds_LookUp, alpha_LookUp)
+        public void Airfoil_dat(string file_path, List<double> reynolds_LookUp, List<double> alpha_LookUp, List<List<double>> Cl_LookUp)
         {
 
             List<string> airfoil_data_line = new List<string>();
@@ -34,7 +35,7 @@ namespace csbemt_v2
                 Console.WriteLine("에어포일 파일을 읽는 도중 오류가 발생했습니다: " + ex.Message);
             }
 
-
+            List<double> Cl_data = new List<double>();
 
             for (int i = 0; i < airfoil_data_line.Count; i++)
             {
@@ -46,23 +47,39 @@ namespace csbemt_v2
                 {
                     if (i == 0)
                     {
-                        Reynolds_LookUp.Add(double.Parse(data[j]));
-
-                        //Console.WriteLine(Reynolds_LookUp[j]);
-                        //Console.WriteLine(Reynolds_LookUp.Count);
+                        reynolds_LookUp.Add(double.Parse(data[j]));
                     }
                     else
                     {
-                        Console.WriteLine(data[j]);
+                        if (j == 0)
+                        {
+                            alpha_LookUp.Add(double.Parse(data[j]));
+                        }
+                        else
+                        {
+                            Cl_data.Add(double.Parse(data[j]));
+                        }
                     }
-
-                    if ( j==0)
-                    {
-                        alpha_LookUp.Add(data[j])
-                    }
-
                 }
-                Console.WriteLine();
+                Cl_LookUp.Add(new List<double>(Cl_data));
+                Cl_data.Clear();
+            }
+
+            //for (int i = 0; i < reynolds_LookUp.Count; i++)
+            //{
+            //    Console.WriteLine("reynolds_LookUp[" + i + "] : " + reynolds_LookUp[i]);
+            //}
+
+            //for (int i = 0; i < alpha_LookUp.Count; i++)
+            //{
+            //    Console.WriteLine("alpha_LookUp[" + i + "] : " + alpha_LookUp[i]);
+            //}
+
+
+            for (int i = 0; i < Cl_LookUp.Count; i++)
+            {
+                //Console.WriteLine("Cl_LookUp[" + i + "] : " + Cl_LookUp[i]);
+                Console.WriteLine(string.Join(" ", Cl_LookUp[i]));
             }
         }
 

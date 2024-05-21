@@ -73,7 +73,6 @@ namespace csbemt_v2
             dy = (radius[sections.Length - 1] - radius[0]) / sections.Length;
             Console.WriteLine("dy : " + dy);
 
-            List<double> Reynolds_LookUp = new List<double>();
 
             // dat 파일의 모든 정보를 저장하는 배열
             List<double> airfoil_alpha = new List<double>();
@@ -88,7 +87,11 @@ namespace csbemt_v2
 
             string file_path = @"C:\csbemt_v2\LookUpTable_NACA0012.txt";
 
-            Read.Airfoil_dat(file_path, Reynolds_LookUp);
+            List<double> reynolds_LookUp = new List<double>();
+            List<double> alpha_LookUp = new List<double>();
+            List<List<double>> Cl_LookUp = new List<List<double>>();
+
+            Read.Airfoil_dat(file_path, reynolds_LookUp, alpha_LookUp, Cl_LookUp);
 
             //(airfoil_alpha, airfoil_Cl, airfoil_Cd) = Read.Airfoil_dat(file_path, airfoil_alpha, airfoil_Cl, airfoil_Cd);
 

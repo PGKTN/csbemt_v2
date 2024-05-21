@@ -76,11 +76,11 @@ namespace csbemt_v2
             //}
 
 
-            for (int i = 0; i < Cl_LookUp.Count; i++)
-            {
-                //Console.WriteLine("Cl_LookUp[" + i + "] : " + Cl_LookUp[i]);
-                Console.WriteLine(string.Join(" ", Cl_LookUp[i]));
-            }
+            //for (int i = 0; i < Cl_LookUp.Count; i++)
+            //{
+            //    //Console.WriteLine("Cl_LookUp[" + i + "] : " + Cl_LookUp[i]);
+            //    Console.WriteLine(string.Join(" ", Cl_LookUp[i]));
+            //}
         }
 
         private string ConsolidateSpaces(string input)

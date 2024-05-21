@@ -57,11 +57,11 @@ namespace csbemt_v2
             for (int i = 0; i < sections.Length; i++)
                 Console.WriteLine("twist[" + i + "] : " + theta[i]);
 
-            List<double> Reynolds = new List<double>();
+            List<double> reynolds = new List<double>();
             for (int i = 0; i < sections.Length; i++)
             {
-                Reynolds.Add(Calc.Get_Reynolds(rho, omega, radius[i], chord[i], mu));
-                Console.WriteLine("Reynolds[" + i + "] : " + Reynolds[i]);
+                reynolds.Add(Calc.Get_Reynolds(rho, omega, radius[i], chord[i], mu));
+                Console.WriteLine("Reynolds[" + i + "] : " + reynolds[i]);
             }
 
             Console.WriteLine();
@@ -73,15 +73,46 @@ namespace csbemt_v2
             dy = (radius[sections.Length - 1] - radius[0]) / sections.Length;
             Console.WriteLine("dy : " + dy);
 
+            double Cl_alpha = 2 * Math.PI;
+            Console.WriteLine("Cl_alpha : " + Cl_alpha);
 
-            // dat 파일의 모든 정보를 저장하는 배열
-            List<double> airfoil_alpha = new List<double>();
-            List<double> airfoil_Cl = new List<double>();
-            List<double> airfoil_Cd = new List<double>();
+            double B = 0.95;
 
-            // 내가 사용할 값만 저장하는 배열
-            List<double> Cl = new List<double>();
-            List<double> Cd = new List<double>();
+            double Ct = 0.0;
+            Ct = Calc.Get_Ct(sigma, Cl_alpha, theta[0], B);
+            Console.WriteLine("Ct : " + Ct);
+
+            double rambda = 0.0;
+            rambda = Calc.Get_rambda(Ct);
+            Console.WriteLine("rambda : " + rambda);
+            Console.WriteLine();
+
+            List<double> U = new List<double>();
+            List<double> phi = new List<double>();
+
+            for (int i = 0; i < sections.Length; i++)
+            {
+                U.Add(Calc.Get_UT(omega, radius[i]));
+                Console.WriteLine("U[" + i + "] : " + U[i]);
+            }
+
+            // "phi = rambda / r", "r = 블레이드의 상대 위치" 
+            for (int i = 0; i < sections.Length; i++)
+            {
+                phi.Add(Calc.Get_phi(rambda, (radius[i] / radius[sections.Length - 1])));
+                Console.WriteLine("phi[" + i + "] : " + phi[i]);
+            }
+            Console.WriteLine();
+
+
+            List<double> alpha = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                alpha.Add(theta[i] - phi[i]);
+
+                Console.WriteLine("alpha[" + i + "] : " + alpha[i]);
+            }
+            Console.WriteLine();
 
             ReadData Read = new ReadData();
 
@@ -93,86 +124,63 @@ namespace csbemt_v2
 
             Read.Airfoil_dat(file_path, reynolds_LookUp, alpha_LookUp, Cl_LookUp);
 
-            //(airfoil_alpha, airfoil_Cl, airfoil_Cd) = Read.Airfoil_dat(file_path, airfoil_alpha, airfoil_Cl, airfoil_Cd);
+            List<double> Cl = new List<double>();
+            List<double> Cd = new List<double>();
+            List<double> alpha_calc = new List<double>();
+            List<double> reynolds_calc = new List<double>();
 
-            //double Cl_alpha = 2 * Math.PI;
-            //Console.WriteLine("Cl_alpha : " + Cl_alpha);
+            // dat파일에서 twist에 가장 근접한 alpha 찾기 
+            List<int> alpha_index = new List<int>();
+            List<int> reynolds_index = new List<int>();
 
-            //double B = 0.95;
+            int index = 0;
+            for (int i = 0; i < sections.Length; i++)
+            {
+                double alpha_ = 0;
+                for (int j = 0; j < alpha_LookUp.Count-1; j++)
+                {
+                    if (Math.Abs(alpha[i] - alpha_LookUp[j]) > Math.Abs(alpha[i] - alpha_LookUp[j + 1]))
+                    {
+                        alpha_ = alpha_LookUp[j + 1];
+                        index++;
+                    }
+                    else
+                        break;
+                }
+                alpha_calc.Add(alpha_);
+                alpha_index.Add(index);
+            }
 
-            //double Ct = 0.0;
-            //Ct = Calc.Get_Ct(sigma, Cl_alpha, theta[0], B);
-            //Console.WriteLine("Ct : " + Ct);
+            index = 0;
+            for (int i = 0; i < sections.Length; i++)
+            {
+                double reynolds_ = 0.0;
+                for (int j = 0; j < reynolds_LookUp.Count; j++)
+                {
+                    if (Math.Abs(reynolds[i] - reynolds_LookUp[j]) > Math.Abs(reynolds[i] - reynolds_LookUp[j + 1]))
+                    {
+                        reynolds_ = reynolds_LookUp[j + 1];
 
-            //double rambda = 0.0;
-            //rambda = Calc.Get_rambda(Ct);
-            //Console.WriteLine("rambda : " + rambda);
-            //Console.WriteLine();
+                    }
+                    else
+                        break;
+                }
 
-            //List<double> U = new List<double>();
-            //List<double> phi = new List<double>();
+                reynolds_calc.Add(reynolds_);
+                reynolds_index.Add(index);
+            }
 
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    U.Add(Calc.Get_UT(omega, radius[i]));
-            //    Console.WriteLine("U[" + i + "] : " + U[i]);
-            //}
+            for(int i = 0; i < alpha_calc.Count; i++)
+            {
+                Console.WriteLine("alpha_calc[" + i + "] :" + alpha_calc[i]);
+            }
+            Console.WriteLine();
 
-            //// "phi = rambda / r", "r = 블레이드의 상대 위치" 
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    phi.Add(Calc.Get_phi(rambda, (radius[i] / radius[sections.Length - 1])));
-            //    Console.WriteLine("phi[" + i + "] : " + phi[i]);
-            //}
-            //Console.WriteLine();
-
-
-            //List<double> alpha = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    alpha.Add(theta[i] - phi[i]);
-
-            //    Console.WriteLine("alpha[" + i + "] : " + alpha[i]);
-            //}
-            //Console.WriteLine();
-
-
-            //// dat파일에서 twist에 가장 근접한 alpha 찾기 
-            //List<int> index = new List<int>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    // double num = 0;
-            //    int index_ = 0;
-
-            //    for (int j = 0; j < airfoil_alpha.Count - 1; j++)
-            //    {
-            //        // alpha가 내림차순, 오름차순에 관계 없이 절대값으로 비교한다.
-            //        if (Math.Abs(alpha[i] - airfoil_alpha[j]) > Math.Abs(alpha[i] - airfoil_alpha[j + 1]))
-            //        {
-            //            // num = Math.Abs(twist[i] - airfoil_alpha[j + 1]);
-            //            index_++;
-            //        }
-            //    }
-
-            //    index.Add(index_);
-
-            //    //Console.WriteLine("num : " + num + ", index : " + index[i] + ", twist : " + twist[i] + ", alpha : " + airfoil_alpha[index[i]]);
-
-            //    Cl.Add(Calc.Interpolation(alpha[i],
-            //                              airfoil_alpha[index[i] - 1],
-            //                              airfoil_alpha[index[i] + 1],
-            //                              airfoil_Cl[index[i] - 1],
-            //                              airfoil_Cl[index[i] + 1]));
-
-            //    Cd.Add(Calc.Interpolation(alpha[i],
-            //                              airfoil_alpha[index[i] - 1],
-            //                              airfoil_alpha[index[i] + 1],
-            //                              airfoil_Cd[index[i] - 1],
-            //                              airfoil_Cd[index[i] + 1]));
-
-            //    Console.WriteLine("Cl : " + Cl[i] + ", Cd : " + Cd[i]);
-            //}
-            //Console.WriteLine();
+            for (int i = 0; i < reynolds_calc.Count; i++)
+            {
+                Console.WriteLine("reynolds_calc[" + i + "] :" + reynolds_calc[i]);
+            }
+            Console.WriteLine();
 
             //double Lift = 0.0;
             //List<double> dL = new List<double>();

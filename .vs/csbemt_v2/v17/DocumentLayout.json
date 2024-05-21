@@ -3,10 +3,6 @@
   "WorkspaceRootPath": "C:\\csbemt_v2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\calculate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:calculate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -15,16 +11,20 @@
       "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:readdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\ini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:ini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\calculate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:calculate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\rotor.ini||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:rotor.ini||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\formula.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:formula.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\ini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:ini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\csbemt_v2.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -38,11 +38,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Formula.txt",
               "DocumentMoniker": "C:\\csbemt_v2\\Formula.txt",
               "RelativeDocumentMoniker": "Formula.txt",
@@ -54,7 +54,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "rotor.ini",
               "DocumentMoniker": "C:\\csbemt_v2\\rotor.ini",
               "RelativeDocumentMoniker": "rotor.ini",
@@ -66,7 +66,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "ReadData.cs",
               "DocumentMoniker": "C:\\csbemt_v2\\ReadData.cs",
               "RelativeDocumentMoniker": "ReadData.cs",
@@ -74,25 +74,23 @@
               "RelativeToolTip": "ReadData.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAAAGQAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-20T08:10:11.752Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-20T08:10:11.752Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Calculate.cs",
               "DocumentMoniker": "C:\\csbemt_v2\\Calculate.cs",
               "RelativeDocumentMoniker": "Calculate.cs",
               "ToolTip": "C:\\csbemt_v2\\Calculate.cs",
               "RelativeToolTip": "Calculate.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAFAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABIAAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-20T08:09:58.495Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-20T08:09:58.495Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "Ini.cs",
               "DocumentMoniker": "C:\\csbemt_v2\\Ini.cs",
               "RelativeDocumentMoniker": "Ini.cs",
@@ -104,13 +102,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\csbemt_v2\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\csbemt_v2\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAJ8AAAAAAAAAAAAcwLcAAAAAAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAuwBUAAABBAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-20T08:08:59.432Z",
               "EditorCaption": ""

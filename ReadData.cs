@@ -34,24 +34,23 @@ namespace csbemt_v2
                 Console.WriteLine("에어포일 파일을 읽는 도중 오류가 발생했습니다: " + ex.Message);
             }
 
-            
+
 
             for (int i = 0; i < airfoil_data_line.Count; i++)
             {
                 airfoil_data_line[i] = ConsolidateTabs(airfoil_data_line[i]);
 
-                string[] data = airfoil_data_line[i].Split('\t');
+                string[] data = airfoil_data_line[i].Split(' ');
 
-                for (int j = 0; j < data.Count; j++)
+                for (int j = 0; j < data.Length; j++)
                 {
-                    Reynolds_LookUp.Add(data[i]);
-
-                    Console.WriteLine(Reynolds_LookUp[j]);
+                    Console.Write(data[j] + " ");
                 }
+                Console.WriteLine();
             }
         }
 
-        static string ConsolidateSpaces(string input)
+        private string ConsolidateSpaces(string input)
         {
             // 공백을 기준으로 문자열 분할
             string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);

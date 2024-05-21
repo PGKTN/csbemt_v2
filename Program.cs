@@ -75,9 +75,6 @@ namespace csbemt_v2
 
             List<double> Reynolds_LookUp = new List<double>();
 
-            Read.
-
-            
             // dat 파일의 모든 정보를 저장하는 배열
             List<double> airfoil_alpha = new List<double>();
             List<double> airfoil_Cl = new List<double>();
@@ -89,167 +86,169 @@ namespace csbemt_v2
 
             ReadData Read = new ReadData();
 
-            string file_path = @"C:\csbemt_v2\NACA_0012.dat";
+            string file_path = @"C:\csbemt_v2\LookUpTable_NACA0012.txt";
 
-            (airfoil_alpha, airfoil_Cl, airfoil_Cd) = Read.Airfoil_dat(file_path, airfoil_alpha, airfoil_Cl, airfoil_Cd);
+            Read.Airfoil_dat(file_path, Reynolds_LookUp);
 
-            double Cl_alpha = 2 * Math.PI;
-            Console.WriteLine("Cl_alpha : " + Cl_alpha);
+            //(airfoil_alpha, airfoil_Cl, airfoil_Cd) = Read.Airfoil_dat(file_path, airfoil_alpha, airfoil_Cl, airfoil_Cd);
 
-            double B = 0.95;
+            //double Cl_alpha = 2 * Math.PI;
+            //Console.WriteLine("Cl_alpha : " + Cl_alpha);
 
-            double Ct = 0.0;
-            Ct = Calc.Get_Ct(sigma, Cl_alpha, theta[0], B);
-            Console.WriteLine("Ct : " + Ct);
+            //double B = 0.95;
 
-            double rambda = 0.0;
-            rambda = Calc.Get_rambda(Ct);
-            Console.WriteLine("rambda : " + rambda);
-            Console.WriteLine();
+            //double Ct = 0.0;
+            //Ct = Calc.Get_Ct(sigma, Cl_alpha, theta[0], B);
+            //Console.WriteLine("Ct : " + Ct);
 
-            List<double> U = new List<double>();
-            List<double> phi = new List<double>();
+            //double rambda = 0.0;
+            //rambda = Calc.Get_rambda(Ct);
+            //Console.WriteLine("rambda : " + rambda);
+            //Console.WriteLine();
 
-            for (int i = 0; i < sections.Length; i++)
-            {
-                U.Add(Calc.Get_UT(omega, radius[i]));
-                Console.WriteLine("U[" + i + "] : " + U[i]);
-            }
+            //List<double> U = new List<double>();
+            //List<double> phi = new List<double>();
 
-            // "phi = rambda / r", "r = 블레이드의 상대 위치" 
-            for (int i = 0; i < sections.Length; i++)
-            {
-                phi.Add(Calc.Get_phi(rambda, (radius[i] / radius[sections.Length - 1])));
-                Console.WriteLine("phi[" + i + "] : " + phi[i]);
-            }
-            Console.WriteLine();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    U.Add(Calc.Get_UT(omega, radius[i]));
+            //    Console.WriteLine("U[" + i + "] : " + U[i]);
+            //}
 
-
-            List<double> alpha = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                alpha.Add(theta[i] - phi[i]);
-
-                Console.WriteLine("alpha[" + i + "] : " + alpha[i]);
-            }
-            Console.WriteLine();
+            //// "phi = rambda / r", "r = 블레이드의 상대 위치" 
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    phi.Add(Calc.Get_phi(rambda, (radius[i] / radius[sections.Length - 1])));
+            //    Console.WriteLine("phi[" + i + "] : " + phi[i]);
+            //}
+            //Console.WriteLine();
 
 
-            // dat파일에서 twist에 가장 근접한 alpha 찾기 
-            List<int> index = new List<int>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                // double num = 0;
-                int index_ = 0;
+            //List<double> alpha = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    alpha.Add(theta[i] - phi[i]);
 
-                for (int j = 0; j < airfoil_alpha.Count - 1; j++)
-                {
-                    // alpha가 내림차순, 오름차순에 관계 없이 절대값으로 비교한다.
-                    if (Math.Abs(alpha[i] - airfoil_alpha[j]) > Math.Abs(alpha[i] - airfoil_alpha[j + 1]))
-                    {
-                        // num = Math.Abs(twist[i] - airfoil_alpha[j + 1]);
-                        index_++;
-                    }
-                }
-
-                index.Add(index_);
-
-                //Console.WriteLine("num : " + num + ", index : " + index[i] + ", twist : " + twist[i] + ", alpha : " + airfoil_alpha[index[i]]);
-
-                Cl.Add(Calc.Interpolation(alpha[i],
-                                          airfoil_alpha[index[i] - 1],
-                                          airfoil_alpha[index[i] + 1],
-                                          airfoil_Cl[index[i] - 1],
-                                          airfoil_Cl[index[i] + 1]));
-
-                Cd.Add(Calc.Interpolation(alpha[i],
-                                          airfoil_alpha[index[i] - 1],
-                                          airfoil_alpha[index[i] + 1],
-                                          airfoil_Cd[index[i] - 1],
-                                          airfoil_Cd[index[i] + 1]));
-
-                Console.WriteLine("Cl : " + Cl[i] + ", Cd : " + Cd[i]);
-            }
-            Console.WriteLine();
-
-            double Lift = 0.0;
-            List<double> dL = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                dL.Add(Calc.Get_dL(rho, U[i], chord[i], Cl[i], dy));
-                Console.WriteLine("dL[" + i + "] : " + dL[i]);
-
-                Lift += dL[i];
-            }
-            Console.WriteLine();
-
-            double Drag = 0.0;
-            List<double> dD = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                dD.Add(Calc.Get_dD(rho, U[i], chord[i], Cd[i], dy));
-                Console.WriteLine("dD[" + i + "] : " + dD[i]);
-
-                Drag += dD[i];
-            }
-            Console.WriteLine();
-
-            List<double> dFx = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                dFx.Add(Calc.Get_dFx(dL[i], dD[i], phi[i]));
-                Console.WriteLine("dFx[" + i + "] : " + dFx[i]);
-            }
-            Console.WriteLine();
-
-            List<double> dFz = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                dFz.Add(Calc.Get_dFz(dL[i], dD[i], phi[i]));
-                Console.WriteLine("dFz[" + i + "] : " + dFz[i]);
-            }
-            Console.WriteLine();
+            //    Console.WriteLine("alpha[" + i + "] : " + alpha[i]);
+            //}
+            //Console.WriteLine();
 
 
-            double Thrust = 0.0;
-            List<double> dT = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                dT.Add(Calc.Get_dT(Nb, dFz[i]));
-                Console.WriteLine("dT[" + i + "] : " + dT[i]);
+            //// dat파일에서 twist에 가장 근접한 alpha 찾기 
+            //List<int> index = new List<int>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    // double num = 0;
+            //    int index_ = 0;
 
-                Thrust += 2 * (Math.PI) * radius[i] * dT[i];
-            }
-            Console.WriteLine();
+            //    for (int j = 0; j < airfoil_alpha.Count - 1; j++)
+            //    {
+            //        // alpha가 내림차순, 오름차순에 관계 없이 절대값으로 비교한다.
+            //        if (Math.Abs(alpha[i] - airfoil_alpha[j]) > Math.Abs(alpha[i] - airfoil_alpha[j + 1]))
+            //        {
+            //            // num = Math.Abs(twist[i] - airfoil_alpha[j + 1]);
+            //            index_++;
+            //        }
+            //    }
+
+            //    index.Add(index_);
+
+            //    //Console.WriteLine("num : " + num + ", index : " + index[i] + ", twist : " + twist[i] + ", alpha : " + airfoil_alpha[index[i]]);
+
+            //    Cl.Add(Calc.Interpolation(alpha[i],
+            //                              airfoil_alpha[index[i] - 1],
+            //                              airfoil_alpha[index[i] + 1],
+            //                              airfoil_Cl[index[i] - 1],
+            //                              airfoil_Cl[index[i] + 1]));
+
+            //    Cd.Add(Calc.Interpolation(alpha[i],
+            //                              airfoil_alpha[index[i] - 1],
+            //                              airfoil_alpha[index[i] + 1],
+            //                              airfoil_Cd[index[i] - 1],
+            //                              airfoil_Cd[index[i] + 1]));
+
+            //    Console.WriteLine("Cl : " + Cl[i] + ", Cd : " + Cd[i]);
+            //}
+            //Console.WriteLine();
+
+            //double Lift = 0.0;
+            //List<double> dL = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    dL.Add(Calc.Get_dL(rho, U[i], chord[i], Cl[i], dy));
+            //    Console.WriteLine("dL[" + i + "] : " + dL[i]);
+
+            //    Lift += dL[i];
+            //}
+            //Console.WriteLine();
+
+            //double Drag = 0.0;
+            //List<double> dD = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    dD.Add(Calc.Get_dD(rho, U[i], chord[i], Cd[i], dy));
+            //    Console.WriteLine("dD[" + i + "] : " + dD[i]);
+
+            //    Drag += dD[i];
+            //}
+            //Console.WriteLine();
+
+            //List<double> dFx = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    dFx.Add(Calc.Get_dFx(dL[i], dD[i], phi[i]));
+            //    Console.WriteLine("dFx[" + i + "] : " + dFx[i]);
+            //}
+            //Console.WriteLine();
+
+            //List<double> dFz = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    dFz.Add(Calc.Get_dFz(dL[i], dD[i], phi[i]));
+            //    Console.WriteLine("dFz[" + i + "] : " + dFz[i]);
+            //}
+            //Console.WriteLine();
 
 
-            double Torque = 0.0;
-            List<double> dQ = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                dQ.Add(Calc.Get_dQ(dT[i], radius[i]));
-                Console.WriteLine("dQ[" + i + "] : " + dQ[i]);
+            //double Thrust = 0.0;
+            //List<double> dT = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    dT.Add(Calc.Get_dT(Nb, dFz[i]));
+            //    Console.WriteLine("dT[" + i + "] : " + dT[i]);
 
-                Torque += 2 * (Math.PI) * radius[i] * dQ[i];
-            }
-            Console.WriteLine();
+            //    Thrust += 2 * (Math.PI) * radius[i] * dT[i];
+            //}
+            //Console.WriteLine();
 
-            double Power = 0.0;
-            List<double> dP = new List<double>();
-            for (int i = 0; i < sections.Length; i++)
-            {
-                dP.Add(Calc.Get_dP(dQ[i], omega));
-                Console.WriteLine("dP[" + i + "] : " + dP[i]);
 
-                Power += 2 * (Math.PI) * radius[i] * dP[i];
-            }
-            Console.WriteLine();
+            //double Torque = 0.0;
+            //List<double> dQ = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    dQ.Add(Calc.Get_dQ(dT[i], radius[i]));
+            //    Console.WriteLine("dQ[" + i + "] : " + dQ[i]);
 
-            Console.WriteLine("Lift : " + Lift);
-            Console.WriteLine("Drag : " + Drag);
-            Console.WriteLine("Thrust : " + Thrust);
-            Console.WriteLine("Torque : " + Torque);
-            Console.WriteLine("Power : " + Power);
+            //    Torque += 2 * (Math.PI) * radius[i] * dQ[i];
+            //}
+            //Console.WriteLine();
+
+            //double Power = 0.0;
+            //List<double> dP = new List<double>();
+            //for (int i = 0; i < sections.Length; i++)
+            //{
+            //    dP.Add(Calc.Get_dP(dQ[i], omega));
+            //    Console.WriteLine("dP[" + i + "] : " + dP[i]);
+
+            //    Power += 2 * (Math.PI) * radius[i] * dP[i];
+            //}
+            //Console.WriteLine();
+
+            //Console.WriteLine("Lift : " + Lift);
+            //Console.WriteLine("Drag : " + Drag);
+            //Console.WriteLine("Thrust : " + Thrust);
+            //Console.WriteLine("Torque : " + Torque);
+            //Console.WriteLine("Power : " + Power);
 
 
 

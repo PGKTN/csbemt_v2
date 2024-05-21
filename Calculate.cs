@@ -16,6 +16,11 @@ namespace csbemt_v2
             return y;
         }
 
+        public double Bilinear_Interpolation()
+        { 
+            
+        }
+
         public double Get_sigma(int Nb, double chord, double radius, double root)
         {
             return (Nb * chord) * (radius) / (Math.PI * Math.Pow(radius, 2));

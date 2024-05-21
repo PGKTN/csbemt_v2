@@ -98,5 +98,6 @@ namespace csbemt_v2
             // 분할된 부분을 다시 합침
             return string.Join(" ", parts);
         }
+
     }
 }

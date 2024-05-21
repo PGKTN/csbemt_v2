@@ -137,7 +137,7 @@ namespace csbemt_v2
             for (int i = 0; i < sections.Length; i++)
             {
                 double alpha_ = 0;
-                for (int j = 0; j < alpha_LookUp.Count-1; j++)
+                for (int j = 0; j < alpha_LookUp.Count - 1; j++)
                 {
                     if (Math.Abs(alpha[i] - alpha_LookUp[j]) > Math.Abs(alpha[i] - alpha_LookUp[j + 1]))
                     {
@@ -170,7 +170,7 @@ namespace csbemt_v2
                 reynolds_index.Add(index);
             }
 
-            for(int i = 0; i < alpha_calc.Count; i++)
+            for (int i = 0; i < alpha_calc.Count; i++)
             {
                 Console.WriteLine("alpha_calc[" + i + "] :" + alpha_calc[i]);
             }

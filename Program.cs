@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace csbemt_v2
 {
@@ -32,11 +33,12 @@ namespace csbemt_v2
             List<double> chord = new List<double>();
             List<double> theta = new List<double>();
 
-            double omega = 2 * Math.PI * rpm / 60;
-            Console.WriteLine("omega : " + omega);
 
-            Console.WriteLine("rho : " + rho);
-            Console.WriteLine("Nb : " + Nb);
+            double omega = 2 * Math.PI * rpm / 60;
+            //Console.WriteLine("omega : " + omega);
+
+            //Console.WriteLine("rho : " + rho);
+            //Console.WriteLine("Nb : " + Nb);
 
             Calculate Calc = new Calculate();
 
@@ -47,46 +49,46 @@ namespace csbemt_v2
                 theta.Add(double.Parse(str_theta[i]));
             }
 
-            for (int i = 0; i < sections.Length; i++)
-                Console.WriteLine("radius[" + i + "] : " + radius[i]);
-            Console.WriteLine();
+            //for (int i = 0; i < sections.Length; i++)
+            //    Console.WriteLine("radius[" + i + "] : " + radius[i]);
+            //Console.WriteLine();
 
-            for (int i = 0; i < sections.Length; i++)
-                Console.WriteLine("chord[" + i + "] : " + chord[i]);
-            Console.WriteLine();
+            //for (int i = 0; i < sections.Length; i++)
+            //    Console.WriteLine("chord[" + i + "] : " + chord[i]);
+            //Console.WriteLine();
 
-            for (int i = 0; i < sections.Length; i++)
-                Console.WriteLine("twist[" + i + "] : " + theta[i]);
+            //for (int i = 0; i < sections.Length; i++)
+            //    Console.WriteLine("twist[" + i + "] : " + theta[i]);
 
             List<double> reynolds = new List<double>();
             for (int i = 0; i < sections.Length; i++)
             {
                 reynolds.Add(Calc.Get_Reynolds(rho, omega, radius[i], chord[i], mu));
-                Console.WriteLine("Reynolds[" + i + "] : " + reynolds[i]);
+                //Console.WriteLine("Reynolds[" + i + "] : " + reynolds[i]);
             }
 
-            Console.WriteLine();
+            //Console.WriteLine();
             double sigma = 0.0;
             sigma = (Nb * chord[sections.Length - 1] * (radius[sections.Length - 1] - radius[0])) / (Math.PI * Math.Pow(radius[sections.Length - 1], 2));
-            Console.WriteLine("sigma : " + sigma);
+            //Console.WriteLine("sigma : " + sigma);
 
             double dy = 0.0;
             dy = (radius[sections.Length - 1] - radius[0]) / sections.Length;
-            Console.WriteLine("dy : " + dy);
+            //Console.WriteLine("dy : " + dy);
 
             double Cl_alpha = 2 * Math.PI;
-            Console.WriteLine("Cl_alpha : " + Cl_alpha);
+            //Console.WriteLine("Cl_alpha : " + Cl_alpha);
 
             double B = 0.95;
 
             double Ct = 0.0;
             Ct = Calc.Get_Ct(sigma, Cl_alpha, theta[0], B);
-            Console.WriteLine("Ct : " + Ct);
+            //Console.WriteLine("Ct : " + Ct);
 
             double rambda = 0.0;
             rambda = Calc.Get_rambda(Ct);
-            Console.WriteLine("rambda : " + rambda);
-            Console.WriteLine();
+            //Console.WriteLine("rambda : " + rambda);
+            //Console.WriteLine();
 
             List<double> U = new List<double>();
             List<double> phi = new List<double>();
@@ -94,16 +96,16 @@ namespace csbemt_v2
             for (int i = 0; i < sections.Length; i++)
             {
                 U.Add(Calc.Get_UT(omega, radius[i]));
-                Console.WriteLine("U[" + i + "] : " + U[i]);
+                //Console.WriteLine("U[" + i + "] : " + U[i]);
             }
 
             // "phi = rambda / r", "r = 블레이드의 상대 위치" 
             for (int i = 0; i < sections.Length; i++)
             {
                 phi.Add(Calc.Get_phi(rambda, (radius[i] / radius[sections.Length - 1])));
-                Console.WriteLine("phi[" + i + "] : " + phi[i]);
+                //Console.WriteLine("phi[" + i + "] : " + phi[i]);
             }
-            Console.WriteLine();
+            //Console.WriteLine();
 
 
             List<double> alpha = new List<double>();
@@ -111,9 +113,9 @@ namespace csbemt_v2
             {
                 alpha.Add(theta[i] - phi[i]);
 
-                Console.WriteLine("alpha[" + i + "] : " + alpha[i]);
+                //Console.WriteLine("alpha[" + i + "] : " + alpha[i]);
             }
-            Console.WriteLine();
+            //Console.WriteLine();
 
             ReadData Read = new ReadData();
 
@@ -121,12 +123,9 @@ namespace csbemt_v2
 
             List<double> reynolds_LookUp = new List<double>();
             List<double> alpha_LookUp = new List<double>();
-            List<List<double>> Cl_LookUp = new List<List<double>>();
+            List<List<double>> Cd_LookUp = new List<List<double>>();
+            Read.Airfoil_dat(file_path, reynolds_LookUp, alpha_LookUp, Cd_LookUp);
 
-            Read.Airfoil_dat(file_path, reynolds_LookUp, alpha_LookUp, Cl_LookUp);
-
-            List<double> Cl = new List<double>();
-            List<double> Cd = new List<double>();
             List<double> alpha_calc = new List<double>();
             List<double> reynolds_calc = new List<double>();
 
@@ -150,6 +149,7 @@ namespace csbemt_v2
                 }
                 alpha_calc.Add(alpha_);
                 alpha_index.Add(index);
+                index = 0;
             }
 
             index = 0;
@@ -161,6 +161,7 @@ namespace csbemt_v2
                     if (Math.Abs(reynolds[i] - reynolds_LookUp[j]) > Math.Abs(reynolds[i] - reynolds_LookUp[j + 1]))
                     {
                         reynolds_ = reynolds_LookUp[j + 1];
+                        index++;
 
                     }
                     else
@@ -169,147 +170,261 @@ namespace csbemt_v2
 
                 reynolds_calc.Add(reynolds_);
                 reynolds_index.Add(index);
+                index = 0;
             }
 
             for (int i = 0; i < alpha_calc.Count; i++)
             {
-                Console.WriteLine("alpha_calc[" + i + "] :" + alpha_calc[i]);
+                //Console.WriteLine("alpha_calc[" + i + "] :" + alpha_calc[i]);
             }
-            Console.WriteLine();
+            //Console.WriteLine();
 
             for (int i = 0; i < reynolds_calc.Count; i++)
             {
-                Console.WriteLine("reynolds_calc[" + i + "] :" + reynolds_calc[i]);
+                //Console.WriteLine("reynolds_calc[" + i + "] :" + reynolds_calc[i]);
             }
-            Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine(reynolds[reynolds_index[0]]);
+            //Console.WriteLine(reynolds[reynolds_index[0]]);
 
-            for (int i = 0; i < 361; i++)
+            //Console.WriteLine("alpha 배열 크기 : " + alpha.Count);                         // 10
+            //Console.WriteLine("alpha_LookUp 배열 크기 : " + alpha_LookUp.Count);           // 361
+            //Console.WriteLine("alpha_index 배열 크기 : " + alpha_index.Count);             // 10
+
+            //Console.WriteLine("reynolds 배열 크기 : " + reynolds.Count);                   // 10
+            //Console.WriteLine("reynolds_LookUp 배열 크기 : " + reynolds_LookUp.Count);     // 20
+            //Console.WriteLine("reynolds_index 배열 크기 : " + reynolds_index.Count);       // 10
+
+            //Console.WriteLine("Cl_LookUp 배열 세로 크기 : " + Cd_LookUp.Count);            // 362
+            //Console.WriteLine("Cl_LookUp 배열 가로 크기 : " + Cd_LookUp[1].Count);         // 20
+
+            for (int i = 0; i < alpha_index.Count; i++)
             {
-                List<double> test = new List<double>();
-                test.Add(Calc.Interpolation(reynolds[reynolds_index[i]],
-                                            reynolds[i], reynolds[i+1],
-                                            Cl_LookUp[i+1][reynolds_index[i]],
-                                            Cl_LookUp[i + 1][reynolds_index[i+1]]));
+                //Console.WriteLine("alpha_index[" + i + "] : " + alpha_index[i]);
             }
 
+            for (int i = 0; i < reynolds_index.Count; i++)
+            {
+                //Console.WriteLine("reynolds_index[" + i + "] : " + reynolds_index[i]);
+            }
 
-            //double test = Calc.Interpolation(reynolds[0], reynolds_LookUp[0], reynolds_LookUp[1], );
-            //Console.WriteLine(test);
+            List<double> Cl = new List<double>();
 
-            //double Lift = 0.0;
-            //List<double> dL = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    dL.Add(Calc.Get_dL(rho, U[i], chord[i], Cl[i], dy));
-            //    Console.WriteLine("dL[" + i + "] : " + dL[i]);
+            for (int i = 0; i < sections.Length; i++)
+            {
+                if (alpha[i] > alpha_calc[i])
+                {
+                    double test = Calc.Interpolation(alpha[i],
+                                                     alpha_LookUp[alpha_index[i]],
+                                                     alpha_LookUp[alpha_index[i] + 1],
+                                                     Cd_LookUp[alpha_index[i] + 1][reynolds_index[i]],
+                                                     Cd_LookUp[alpha_index[i] + 2][reynolds_index[i]]);
+                    //Console.WriteLine("test " + i + ": " + test);
+                }
+                else
+                {
+                    double test1 = Calc.Interpolation(alpha[i],
+                                                     alpha_LookUp[alpha_index[i]],
+                                                     alpha_LookUp[alpha_index[i] - 1],
+                                                     Cd_LookUp[alpha_index[i] + 1][reynolds_index[i]],
+                                                     Cd_LookUp[alpha_index[i]][reynolds_index[i]]);
 
-            //    Lift += dL[i];
-            //}
+                    double test2 = Calc.Interpolation(alpha[i],
+                                                   alpha_LookUp[alpha_index[i]],
+                                                   alpha_LookUp[alpha_index[i] - 1],
+                                                   Cd_LookUp[alpha_index[i] + 1][reynolds_index[i] + 1],
+                                                   Cd_LookUp[alpha_index[i]][reynolds_index[i] + 1]);
+
+                    if (reynolds[i] > reynolds_calc[i])
+                    {
+                        double test3 = Calc.Interpolation(reynolds[i],
+                                                          reynolds_LookUp[reynolds_index[i]],
+                                                          reynolds_LookUp[reynolds_index[i] + 1],
+                                                          test1, test2);
+
+                        Cl.Add(test3);
+                        //Console.WriteLine("test1 " + i + ": " + test1);
+                        //Console.WriteLine("test2 " + i + ": " + test2);
+                        //Console.WriteLine("test3 " + i + ": " + test3);
+                        //Console.WriteLine("Cl[" + i + "] :" + Cl[i]);
+                        //Console.WriteLine("Cl.count : " + Cl.Count);
+                        //Console.WriteLine();
+                    }
+                    else
+                    {
+                        double test3 = Calc.Interpolation(reynolds[i],
+                                                          reynolds_LookUp[reynolds_index[i]],
+                                                          reynolds_LookUp[reynolds_index[i] - 1],
+                                                          test2, test1);
+
+                        Cl.Add(test3);
+                        //Console.WriteLine("test1 " + i + ": " + test1);
+                        //Console.WriteLine("test2 " + i + ": " + test2);
+                        //Console.WriteLine("test3 " + i + ": " + test3);
+                        //Console.WriteLine("Cl[" + i + "] :" + Cl[i]);
+                        //Console.WriteLine("Cl.count : " + Cl.Count);
+                        //Console.WriteLine();
+                    }
+                }
+
+                //Console.WriteLine("alpha[" + i + "] : " + alpha[i]); 
+                //Console.WriteLine("alpha_LookUp[alpha_index[" + i + "]] : " + alpha_LookUp[alpha_index[i]]);
+                //Console.WriteLine("alpha_LookUp[alpha_index[" + i + "]-1] : " + alpha_LookUp[alpha_index[i] - 1]);  ;
+                //Console.WriteLine("Cl_LookUp[alpha_index[" + i + "] + 1][reynolds_index[" + i + "]] " + Cl_LookUp[alpha_index[i] + 1][reynolds_index[i]]);
+                //Console.WriteLine("Cl_LookUp[alpha_index[" + i + "]][reynolds_index[" + i + "]] : " + Cl_LookUp[alpha_index[i]][reynolds_index[i]]);
+
+
+            }
+
+            reynolds_LookUp.Clear();
+            alpha_LookUp.Clear();
+
+
+            Read.Airfoil_dat(file_path, reynolds_LookUp, alpha_LookUp, Cd_LookUp);
+            List<double> Cd = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                if (alpha[i] > alpha_calc[i])
+                {
+                    double test = Calc.Interpolation(alpha[i],
+                                                     alpha_LookUp[alpha_index[i]],
+                                                     alpha_LookUp[alpha_index[i] + 1],
+                                                     Cd_LookUp[alpha_index[i] + 1][reynolds_index[i]],
+                                                     Cd_LookUp[alpha_index[i] + 2][reynolds_index[i]]);
+                }
+                else
+                {
+                    double test1 = Calc.Interpolation(alpha[i],
+                                                     alpha_LookUp[alpha_index[i]],
+                                                     alpha_LookUp[alpha_index[i] - 1],
+                                                     Cd_LookUp[alpha_index[i] + 1][reynolds_index[i]],
+                                                     Cd_LookUp[alpha_index[i]][reynolds_index[i]]);
+
+                    double test2 = Calc.Interpolation(alpha[i],
+                                                   alpha_LookUp[alpha_index[i]],
+                                                   alpha_LookUp[alpha_index[i] - 1],
+                                                   Cd_LookUp[alpha_index[i] + 1][reynolds_index[i] + 1],
+                                                   Cd_LookUp[alpha_index[i]][reynolds_index[i] + 1]);
+
+                    if (reynolds[i] > reynolds_calc[i])
+                    {
+                        double test3 = Calc.Interpolation(reynolds[i],
+                                                          reynolds_LookUp[reynolds_index[i]],
+                                                          reynolds_LookUp[reynolds_index[i] + 1],
+                                                          test1, test2);
+
+                        Cd.Add(test3);
+
+                        //Console.WriteLine("test1 " + i + ": " + test1);
+                        //Console.WriteLine("test2 " + i + ": " + test2);
+                        //Console.WriteLine("test3 " + i + ": " + test3);
+                        //Console.WriteLine();
+                    }
+                    else
+                    {
+                        double test3 = Calc.Interpolation(reynolds[i],
+                                                          reynolds_LookUp[reynolds_index[i]],
+                                                          reynolds_LookUp[reynolds_index[i] - 1],
+                                                          test2, test1);
+
+                        Cd.Add(test3);
+                        //Console.WriteLine("test1 " + i + ": " + test1);
+                        //Console.WriteLine("test2 " + i + ": " + test2);
+                        //Console.WriteLine("test3 " + i + ": " + test3);
+                        //Console.WriteLine();
+                    }
+                }
+
+                //Console.WriteLine("alpha[" + i + "] : " + alpha[i]); 
+                //Console.WriteLine("alpha_LookUp[alpha_index[" + i + "]] : " + alpha_LookUp[alpha_index[i]]);
+                //Console.WriteLine("alpha_LookUp[alpha_index[" + i + "]-1] : " + alpha_LookUp[alpha_index[i] - 1]);  ;
+                //Console.WriteLine("Cl_LookUp[alpha_index[" + i + "] + 1][reynolds_index[" + i + "]] " + Cl_LookUp[alpha_index[i] + 1][reynolds_index[i]]);
+                //Console.WriteLine("Cl_LookUp[alpha_index[" + i + "]][reynolds_index[" + i + "]] : " + Cl_LookUp[alpha_index[i]][reynolds_index[i]]);
+
+
+            }
+
+            double Lift = 0.0;
+            List<double> dL = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                dL.Add(Calc.Get_dL(rho, U[i], chord[i], Cl[i], dy));
+                //Console.WriteLine("dL[" + i + "] : " + dL[i]);
+
+                Lift += dL[i];
+            }
             //Console.WriteLine();
 
-            //double Drag = 0.0;
-            //List<double> dD = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    dD.Add(Calc.Get_dD(rho, U[i], chord[i], Cd[i], dy));
-            //    Console.WriteLine("dD[" + i + "] : " + dD[i]);
+            double Drag = 0.0;
+            List<double> dD = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                dD.Add(Calc.Get_dD(rho, U[i], chord[i], Cd[i], dy));
+                //Console.WriteLine("dD[" + i + "] : " + dD[i]);
 
-            //    Drag += dD[i];
-            //}
+                Drag += dD[i];
+            }
             //Console.WriteLine();
 
-            //List<double> dFx = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    dFx.Add(Calc.Get_dFx(dL[i], dD[i], phi[i]));
-            //    Console.WriteLine("dFx[" + i + "] : " + dFx[i]);
-            //}
+            List<double> dFx = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                dFx.Add(Calc.Get_dFx(dL[i], dD[i], phi[i]));
+                //Console.WriteLine("dFx[" + i + "] : " + dFx[i]);
+            }
             //Console.WriteLine();
 
-            //List<double> dFz = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    dFz.Add(Calc.Get_dFz(dL[i], dD[i], phi[i]));
-            //    Console.WriteLine("dFz[" + i + "] : " + dFz[i]);
-            //}
-            //Console.WriteLine();
-
-
-            //double Thrust = 0.0;
-            //List<double> dT = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    dT.Add(Calc.Get_dT(Nb, dFz[i]));
-            //    Console.WriteLine("dT[" + i + "] : " + dT[i]);
-
-            //    Thrust += 2 * (Math.PI) * radius[i] * dT[i];
-            //}
+            List<double> dFz = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                dFz.Add(Calc.Get_dFz(dL[i], dD[i], phi[i]));
+                //Console.WriteLine("dFz[" + i + "] : " + dFz[i]);
+            }
             //Console.WriteLine();
 
 
-            //double Torque = 0.0;
-            //List<double> dQ = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    dQ.Add(Calc.Get_dQ(dT[i], radius[i]));
-            //    Console.WriteLine("dQ[" + i + "] : " + dQ[i]);
+            double Thrust = 0.0;
+            List<double> dT = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                dT.Add(Calc.Get_dT(Nb, dFz[i]));
+                //Console.WriteLine("dT[" + i + "] : " + dT[i]);
 
-            //    Torque += 2 * (Math.PI) * radius[i] * dQ[i];
-            //}
+                Thrust += 2 * (Math.PI) * radius[i] * dT[i];
+            }
             //Console.WriteLine();
 
-            //double Power = 0.0;
-            //List<double> dP = new List<double>();
-            //for (int i = 0; i < sections.Length; i++)
-            //{
-            //    dP.Add(Calc.Get_dP(dQ[i], omega));
-            //    Console.WriteLine("dP[" + i + "] : " + dP[i]);
 
-            //    Power += 2 * (Math.PI) * radius[i] * dP[i];
-            //}
+            double Torque = 0.0;
+            List<double> dQ = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                dQ.Add(Calc.Get_dQ(dT[i], radius[i]));
+                //Console.WriteLine("dQ[" + i + "] : " + dQ[i]);
+
+                Torque += 2 * (Math.PI) * radius[i] * dQ[i];
+            }
+            //Console.WriteLine();
+
+            double Power = 0.0;
+            List<double> dP = new List<double>();
+            for (int i = 0; i < sections.Length; i++)
+            {
+                dP.Add(Calc.Get_dP(dQ[i], omega));
+                //Console.WriteLine("dP[" + i + "] : " + dP[i]);
+
+                Power += 2 * (Math.PI) * radius[i] * dP[i];
+            }
             //Console.WriteLine();
 
             //Console.WriteLine("Lift : " + Lift);
             //Console.WriteLine("Drag : " + Drag);
-            //Console.WriteLine("Thrust : " + Thrust);
-            //Console.WriteLine("Torque : " + Torque);
+            Console.WriteLine("Thrust : " + Thrust);
+            Console.WriteLine("Torque : " + Torque);
             //Console.WriteLine("Power : " + Power);
 
 
 
-            //double test = GaussLegendreRule.Integrate( => 9, 0.0, 2 * Math.PI, 10);
-            //Console.WriteLine(test);
-
-            //double Thrust_Total = 0;
-            //List<double> Thrust = new List<double>();
-
-            //for (int i = 0; i < swections.Length; i++)
-            //{
-            //    Thrust.Add(Calculation.Get_T(Ct[i], rho, radius[i], omega));
-
-            //    Thrust_Total += Thrust[i];
-
-            //    Console.WriteLine("T[" + i + "] : " + Math.Round(Thrust[i], 3));
-
-            //}
-
-            //Console.WriteLine("Thrust_Total : " + Math.Round(Thrust_Total, 3));
-
-            //double Lift = 0.0;
-
-            //List<double> dL = new List<double>();
-
-            //for (int i = 0; i < sections.Length-1; i++)
-            //{
-            //    dL.Add(Calculation.Get_dL(rho, omega, radius[i], chord[i], Cl[i], radius[i+1]));
-            //    Console.WriteLine("dL[" + i + "] : " + dL[i]);
-
-            //    Lift += dL[i];
-            //}
-
-            //Console.WriteLine("Lift : " + Lift);
         }
 
     }

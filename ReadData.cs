@@ -65,16 +65,14 @@ namespace csbemt_v2
                 Cl_data.Clear();
             }
 
-            Console.WriteLine(Cl_LookUp[0].Count);
-
-            for (int i = 0; i < 361; i++)
-            {
-                for (int j = 0; j < reynolds_LookUp.Count; j++)
-                {
-                    Console.Write(Cl_LookUp[i+1][j] + " ");
-                }
-                Console.WriteLine();
-            }
+            //for (int i = 0; i < 361; i++)
+            //{
+            //    for (int j = 0; j < reynolds_LookUp.Count; j++)
+            //    {
+            //        Console.Write(Cl_LookUp[i+1][j] + " ");
+            //    }
+            //    Console.WriteLine();
+            //}
 
             //for (int i = 0; i < reynolds_LookUp.Count; i++)
             //{

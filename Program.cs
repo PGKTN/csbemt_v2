@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace csbemt_v2
@@ -181,6 +182,21 @@ namespace csbemt_v2
                 Console.WriteLine("reynolds_calc[" + i + "] :" + reynolds_calc[i]);
             }
             Console.WriteLine();
+
+            Console.WriteLine(reynolds[reynolds_index[0]]);
+
+            for (int i = 0; i < 361; i++)
+            {
+                List<double> test = new List<double>();
+                test.Add(Calc.Interpolation(reynolds[reynolds_index[i]],
+                                            reynolds[i], reynolds[i+1],
+                                            Cl_LookUp[i+1][reynolds_index[i]],
+                                            Cl_LookUp[i + 1][reynolds_index[i+1]]));
+            }
+
+
+            //double test = Calc.Interpolation(reynolds[0], reynolds_LookUp[0], reynolds_LookUp[1], );
+            //Console.WriteLine(test);
 
             //double Lift = 0.0;
             //List<double> dL = new List<double>();

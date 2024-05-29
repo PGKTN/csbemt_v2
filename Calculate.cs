@@ -17,8 +17,8 @@ namespace csbemt_v2
         }
 
         public double Bilinear_Interpolation()
-        { 
-            
+        {
+            return 0;
         }
 
         public double Get_sigma(int Nb, double chord, double radius, double root)

@@ -57,7 +57,8 @@ Therefore,
 // Reynolds Number
     Re = rho * omega * radius * chord / mu
 
-// RPM = omega * 60 / (2 * Math.PI)
+// rpm = omega * 60 / (2 * Math.PI)
+// omega = rpm * (2*Math.Pi) / 60
 
 // Tip Loss로 인한 면적 감소 현상 + Root Cut
 // 0 < B <= 1

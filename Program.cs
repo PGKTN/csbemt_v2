@@ -11,36 +11,40 @@ namespace csbemt_v2
 {
     internal class Program
     {
+        const double PI = 3.14159265358979323846;
+        const double deg2rad = PI / 180;
+        const double rad2deg = 180 / PI;
+        const double g = 9.81;
+        const double rpm2omega = 2 * PI / 60;
+        const double omega2rpm = 60 / (2 * PI);
+
         static void Main()
         {
+            Calculate Calc = new Calculate();
             ReadWriteINIfile ini = new ReadWriteINIfile(@"C:\csbemt_v2\rotor.ini");
 
-            double rho = double.Parse(ini.ReadINI("fluid", "rho"));
-            double mu = double.Parse(ini.ReadINI("fluid", "mu"));
-
+            ////////////////////
+            /// ini 파일 읽기 ///
+            ////////////////////
+            //case
             double rpm = double.Parse(ini.ReadINI("case", "rpm"));
             double v_inf = double.Parse(ini.ReadINI("case", "v_inf"));
 
+            //rotor
+            double nblades = double.Parse(ini.ReadINI("rotor", "nblades"));
+            double diameter = double.Parse(ini.ReadINI("rotor", "diameter"));
+            double radius_hub = double.Parse(ini.ReadINI("rotor", "radius_hub"));
             string[] sections = ini.ReadINI("rotor", "section").Split(' ');
 
+            ////string으로 불러오기
             string[] str_radius = ini.ReadINI("rotor", "radius").Split(' ');
             string[] str_chord = ini.ReadINI("rotor", "chord").Split(' ');
             string[] str_theta = ini.ReadINI("rotor", "pitch").Split(' ');
 
-            int Nb = int.Parse(ini.ReadINI("rotor", "nblades"));
-
+            ////string -> double 변환
             List<double> radius = new List<double>();
             List<double> chord = new List<double>();
             List<double> theta = new List<double>();
-
-
-            double omega = 2 * Math.PI * rpm / 60;
-            //Console.WriteLine("omega : " + omega);
-
-            //Console.WriteLine("rho : " + rho);
-            //Console.WriteLine("Nb : " + Nb);
-
-            Calculate Calc = new Calculate();
 
             for (int i = 0; i < sections.Length; i++)
             {
@@ -49,27 +53,56 @@ namespace csbemt_v2
                 theta.Add(double.Parse(str_theta[i]));
             }
 
-            //for (int i = 0; i < sections.Length; i++)
-            //    Console.WriteLine("radius[" + i + "] : " + radius[i]);
-            //Console.WriteLine();
+            if (sections.Length != radius.Count)
+                Console.WriteLine("radius.Count 오류\n");
+            else if (sections.Length != chord.Count)
+                Console.WriteLine("chord.Count 오류\n");
+            else if (sections.Length != theta.Count)
+                Console.WriteLine("theta.Count 오류\n");
 
-            //for (int i = 0; i < sections.Length; i++)
-            //    Console.WriteLine("chord[" + i + "] : " + chord[i]);
-            //Console.WriteLine();
+            //fluid
+            double rho = double.Parse(ini.ReadINI("fluid", "rho"));
+            double mu = double.Parse(ini.ReadINI("fluid", "mu"));
 
-            //for (int i = 0; i < sections.Length; i++)
-            //    Console.WriteLine("twist[" + i + "] : " + theta[i]);
+            ////////////////////
+            /// ini 정보 출력 ///
+            ////////////////////
+            Console.WriteLine("[case]");
+            Console.WriteLine("rpm = " + rpm + "");
+            Console.WriteLine("v_inf = " + v_inf + "\n");
+            Console.WriteLine("[rotor]");
+            Console.WriteLine("nblades = " + nblades + "");
+            Console.WriteLine("diameter = " + diameter + "");
+            Console.WriteLine("radius_hub = " + radius_hub + "");
+            Console.WriteLine("section = " + string.Join(" ", sections) + "");
+            Console.WriteLine("radius = " + string.Join(" ", radius) + "");
+            Console.WriteLine("chord = " + string.Join(" ", chord) + "");
+            Console.WriteLine("pitch = " + string.Join(" ", theta) + "\n");
+            Console.WriteLine("[fluid]");
+            Console.WriteLine("rho = " + rho +  "");
+            Console.WriteLine("mu = " + mu + "\n");
 
+            ////////////////////////////
+            /// omega, reynolds 계산 ///
+            ////////////////////////////
+            //omega
+            double omega = rpm * rpm2omega;
+            Console.WriteLine("omega = " + omega.ToString("N2"));
+
+            //reynolds
             List<double> reynolds = new List<double>();
             for (int i = 0; i < sections.Length; i++)
             {
                 reynolds.Add(Calc.Get_Reynolds(rho, omega, radius[i], chord[i], mu));
-                //Console.WriteLine("Reynolds[" + i + "] : " + reynolds[i]);
+                Console.WriteLine("reynolds[" + i + "] : " + reynolds[i].ToString("N2"));
             }
+            //Tostring에서 숫자 쉼표 제거하는 법?
+
+
 
             //Console.WriteLine();
             double sigma = 0.0;
-            sigma = (Nb * chord[sections.Length - 1] * (radius[sections.Length - 1] - radius[0])) / (Math.PI * Math.Pow(radius[sections.Length - 1], 2));
+            sigma = (nblades * chord[sections.Length - 1] * (radius[sections.Length - 1] - radius[0])) / (Math.PI * Math.Pow(radius[sections.Length - 1], 2));
             //Console.WriteLine("sigma : " + sigma);
 
             double dy = 0.0;
@@ -387,7 +420,7 @@ namespace csbemt_v2
             List<double> dT = new List<double>();
             for (int i = 0; i < sections.Length; i++)
             {
-                dT.Add(Calc.Get_dT(Nb, dFz[i]));
+                dT.Add(Calc.Get_dT(nblades, dFz[i]));
                 //Console.WriteLine("dT[" + i + "] : " + dT[i]);
 
                 Thrust += 2 * (Math.PI) * radius[i] * dT[i];
@@ -421,7 +454,7 @@ namespace csbemt_v2
             //Console.WriteLine("Drag : " + Drag);
             Console.WriteLine("Thrust : " + Thrust);
             Console.WriteLine("Torque : " + Torque);
-            //Console.WriteLine("Power : " + Power);
+            Console.WriteLine("Power : " + Power);
 
 
 

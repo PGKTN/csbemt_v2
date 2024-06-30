@@ -11,12 +11,12 @@
       "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:calculate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\readdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:readdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\ini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:ini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\readdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|solutionrelative:readdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5968FCE7-61D3-4323-A8CD-5AC475D7DE8F}|csbemt_v2.csproj|c:\\csbemt_v2\\rotor.ini||{3B902123-F8A7-4915-9F01-361F908088D0}",
@@ -30,8 +30,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 9,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e78e0cf7-2e4e-48a7-bf7f-a94d9330a3be}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 4,
@@ -46,7 +66,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ReadData.cs",
               "DocumentMoniker": "C:\\csbemt_v2\\ReadData.cs",
               "RelativeDocumentMoniker": "ReadData.cs",
@@ -64,14 +84,13 @@
               "RelativeDocumentMoniker": "Calculate.cs",
               "ToolTip": "C:\\csbemt_v2\\Calculate.cs",
               "RelativeToolTip": "Calculate.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
+              "ViewState": "AQIAABwAAAAAAAAAAEBAwD8AAABzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-20T08:09:58.495Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-05-20T08:09:58.495Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Ini.cs",
               "DocumentMoniker": "C:\\csbemt_v2\\Ini.cs",
               "RelativeDocumentMoniker": "Ini.cs",
@@ -89,7 +108,7 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\csbemt_v2\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAE8AAAAAAAAAAAAgwFoAAAAAAAAA",
+              "ViewState": "AQIAAI8AAAAAAAAAAAAywLIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-20T08:08:59.432Z",
               "EditorCaption": ""
